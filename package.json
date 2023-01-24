@@ -1,0 +1,22 @@
+{
+  "name": "uphar_gruh_express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node Server.js",
+    "dev": "nodemon Server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.8.0",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "stripe": "^11.7.0"
+  }
+}
