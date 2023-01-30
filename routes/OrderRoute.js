@@ -1,9 +1,11 @@
 import express from 'express'
 import {isAuthenticated} from "../middlewares/userAuthentication.js";
-import {createOrder, getMyOrders, getOrderById, processOrder, getAllOrders} from "../controllers/OrderController.js";
+import {createOrder, getMyOrders, getOrderById, processOrder, getAllOrders, orderSuccess} from "../controllers/OrderController.js";
 
 
 const router = express.Router()
+
+router.get('/success', orderSuccess )
 
 router.post('/create', isAuthenticated, createOrder)
 

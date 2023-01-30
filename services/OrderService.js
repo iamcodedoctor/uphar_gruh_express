@@ -23,7 +23,7 @@ export const create = ({
                             product_data: {
                                 name: item.title,
                             },
-                            unit_amount: (item.price + 50) * 100,
+                            unit_amount: item.price * 100,
                         },
                         quantity: dish.quantity,
                     };
@@ -34,38 +34,65 @@ export const create = ({
             lineItems.map((item) => {
                 sum += item.price_data.unit_amount * item.quantity;
             });
+            const finalTotoal = sum + deliveryCharges * 100;
             if (paymentMethod === "COD") {
                 const newOrder = Order.create({
                     shippingInfo,
                     paymentMethod,
                     paidAt,
                     deliveryCharges,
-                    totalAmount: sum,
+                    totalAmount: finalTotoal,
                     userId,
                     items: lineItems,
                 });
                 return resolve(newOrder);
             } else {
+                // Simply done to create an order
+                const orderData = {
+                    shippingInfo,
+                    paymentMethod,
+                    paidAt,
+                    deliveryCharges,
+                    totalAmount: finalTotoal,
+                    userId,
+                    items: lineItems,
+                };
+
                 const session = await stripe.checkout.sessions.create({
-                    success_url: `${baseConfig.frontendUrl}/paymentSuccess`,
+                    success_url: `http://localhost:3010/api/v1/order/success?session_id={CHECKOUT_SESSION_ID}&orderData=${JSON.stringify(
+                        orderData
+                    )}`,
                     cancel_url: `${baseConfig.frontendUrl}/paymentFailure`,
+                    shipping_options: [
+                        {
+                            shipping_rate_data: {
+                                type: "fixed_amount",
+                                fixed_amount: { amount: 5000, currency: "inr" },
+                                display_name: "Delivery Charges",
+                                delivery_estimate: {
+                                    minimum: { unit: "business_day", value: 5 },
+                                    maximum: { unit: "business_day", value: 7 },
+                                },
+                            },
+                        },
+                    ],
                     mode: "payment",
                     line_items: lineItems,
                     payment_method_types: ["card"],
                 });
 
-                const newOrder = await Order.create({
-                    shippingInfo,
-                    paymentMethod,
-                    paidAt,
-                    deliveryCharges,
-                    totalAmount: sum,
-                    userId,
-                    items: lineItems,
-                    stripeId: session.id,
-                });
+                // const newOrder = await Order.create({
+                //     shippingInfo,
+                //     paymentMethod,
+                //     paidAt,
+                //     deliveryCharges,
+                //     totalAmount: finalTotoal,
+                //     userId,
+                //     items: lineItems,
+                //     stripeId: session.id,
+                // });
 
-                return resolve({ stripeSession: session, ...newOrder });
+                return resolve({ stripeSession: session });
             }
         } catch (error) {
             return reject(error);

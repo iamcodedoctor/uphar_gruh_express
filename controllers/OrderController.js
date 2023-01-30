@@ -1,3 +1,4 @@
+import { Order } from "../models/Order.js";
 import {
     create,
     allOrders,
@@ -8,11 +9,7 @@ import {
 
 export const createOrder = async (req, res, next) => {
     try {
-        const {
-            shippingInfo,
-            dishes,
-            paymentMethod,
-        } = req.body;
+        const { shippingInfo, dishes, paymentMethod } = req.body;
         const userId = req.user._id;
         const deliveryCharges = 50;
         const response = await create({
@@ -36,7 +33,6 @@ export const createOrder = async (req, res, next) => {
 export const getMyOrders = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        console.log(req.user);
         const response = await myOrders(userId);
         return res.status(200).json({
             success: true,
@@ -82,5 +78,24 @@ export const processOrder = async (req, res, next) => {
         });
     } catch (error) {
         next(error);
+    }
+};
+
+export const orderSuccess = async (req, res, next) => {
+    try {
+        const { session_id, orderData } = req.query;
+        console.log({
+            session_id,
+            orderData,
+        });
+
+        const data = JSON.parse(orderData);
+        const newOrder = await Order.create({
+            ...data,
+            stripeId: session_id,
+        });
+        return res.redirect('http://localhost:3000/paymentSuccess')
+    } catch (error) {
+        return res.redirect('http://localhost:3000/paymentFailure')
     }
 };
