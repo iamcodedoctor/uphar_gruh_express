@@ -12,6 +12,7 @@ import {corsOptions} from "../config/corsOptions.js"
 import userRouter from "../routes/UserRoute.js"
 import itemRouter from "../routes/ItemRoute.js"
 import orderRouter from '../routes/OrderRoute.js'
+import adminRouter from "../routes/adminRoute.js"
 
 const app = express();
 // Middlewares
@@ -41,6 +42,7 @@ app.get('/', (req, res) => {
 app.use("/api/v1", userRouter);
 app.use("/api/v1/item", itemRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/admin", adminRouter)
 
 // Error handler middleware
 app.use(errorHandler);

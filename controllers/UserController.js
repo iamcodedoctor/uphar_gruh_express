@@ -27,14 +27,3 @@ export const logoutUser = (req, res, next) => {
     }
 }
 
-export const getAllUsers = async  (req, res, next) => {
-    try {
-        const users = await User.find({}).lean();
-        return res.status(200).json({
-            success: true,
-            data: users
-        })
-    } catch (error) {
-        next(error);
-    }
-}

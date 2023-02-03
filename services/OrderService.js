@@ -81,17 +81,6 @@ export const create = ({
                     payment_method_types: ["card"],
                 });
 
-                // const newOrder = await Order.create({
-                //     shippingInfo,
-                //     paymentMethod,
-                //     paidAt,
-                //     deliveryCharges,
-                //     totalAmount: finalTotoal,
-                //     userId,
-                //     items: lineItems,
-                //     stripeId: session.id,
-                // });
-
                 return resolve({ stripeSession: session });
             }
         } catch (error) {
@@ -100,13 +89,17 @@ export const create = ({
     });
 };
 
-export const myOrders = (userId) => {
+export const myOrders = ({ userId, page, limit }) => {
     return new Promise(async (resolve, reject) => {
         try {
+            const documentCount = await Order.countDocuments({userId});
             const myOrders = await Order.find({ userId })
+                .skip(page * limit)
+                .limit(limit)
+                .lean()
                 .populate("userId", "name")
                 .lean();
-            return resolve(myOrders);
+            return resolve({documentCount, data: myOrders});
         } catch (error) {
             return reject(error);
         }
@@ -129,11 +122,16 @@ export const getOrderDetails = (id) => {
     });
 };
 
-export const allOrders = () => {
+export const allOrders = ({ page, limit }) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const orders = await Order.find().populate("userId", "name").lean();
-            return resolve(orders);
+            const documentCount = await Order.countDocuments();
+            const orders = await Order.find()
+                .skip(page * limit)
+                .limit(limit)
+                .populate("userId", "name")
+                .lean();
+            return resolve({ documentCount, data: orders });
         } catch (error) {
             return reject(error);
         }
