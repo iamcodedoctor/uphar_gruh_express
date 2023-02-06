@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use(session({
     secret: baseConfig.sessionSecret,
-    saveUninitialized: false,
+    saveUninitialized: true,
     resave: true
 }))
 

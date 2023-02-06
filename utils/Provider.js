@@ -19,7 +19,7 @@ const connectPassport = () => {
                 const newUser = await User.create({
                     googleId: profile.id,
                     name: profile.displayName,
-                    photo: profile.photos[0].value
+                    photo: profile.photos[0].values
                 })
                 return done(null, newUser)
             } else {
