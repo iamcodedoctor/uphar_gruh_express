@@ -9,7 +9,7 @@ const router = express.Router();
 router.get(
     "/googleLogin",
     passport.authenticate("google", {
-        scope: ["email", "profile"],
+        scope: ["profile"],
         successRedirect: baseConfig.googleCallbackUrl,
     })
 );
@@ -17,7 +17,6 @@ router.get(
 router.get(
     "/login",
     passport.authenticate("google", {
-        scope: ["email","profile"],
         successRedirect: baseConfig.frontendUrl,
     })
 );
