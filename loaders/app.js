@@ -27,7 +27,10 @@ app.use(
 );
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Origin", "https://foodplaza.onrender.com");
+    res.header(
+        "Access-Control-Allow-Origin",
+        "https://foodplaza.onrender.com, https://uphargruh.onrender.com"
+    );
     res.header(
         "Access-Control-Allow-Methods",
         "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
