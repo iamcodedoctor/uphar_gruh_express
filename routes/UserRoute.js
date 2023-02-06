@@ -10,7 +10,7 @@ router.get(
     "/googleLogin",
     passport.authenticate("google", {
         scope: ["email", "profile"],
-        successRedirect: baseConfig.frontendUrl,
+        successRedirect: baseConfig.googleCallbackUrl,
     })
 );
 
