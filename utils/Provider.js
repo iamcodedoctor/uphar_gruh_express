@@ -11,12 +11,12 @@ const connectPassport = () => {
                 clientID: baseConfig.clientId,
                 clientSecret: baseConfig.clientSecret,
                 callbackURL: baseConfig.googleCallbackUrl,
-                passReqToCallback: true,
             },
-            
+
             async function (accessToken, refreshToken, profile, done) {
+                const id = profile.id;
                 const user = await User.findOne({
-                    googleId: profile.id,
+                    googleId: id,
                 });
 
                 if (!user) {
