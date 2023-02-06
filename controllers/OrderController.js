@@ -26,11 +26,11 @@ export const createOrder = async (req, res, next) => {
 
 export const getMyOrders = async (req, res, next) => {
     try {
-        let {page, limit} = req.query;
+        let { page, limit } = req.query;
         page = page || 0;
         limit = limit || 10;
         const userId = req.user._id;
-        const response = await myOrders({userId, page, limit});
+        const response = await myOrders({ userId, page, limit });
         return res.status(200).json({
             success: true,
             data: response,
@@ -66,8 +66,8 @@ export const orderSuccess = async (req, res, next) => {
             ...data,
             stripeId: session_id,
         });
-        return res.redirect("http://localhost:3000/paymentSuccess");
+        return res.redirect(`${baseConfig.frontendUrl}/paymentSuccess`);
     } catch (error) {
-        return res.redirect("http://localhost:3000/paymentFailure");
+        return res.redirect(`${baseConfig.frontendUrl}/paymentFailure`);
     }
 };
