@@ -11,7 +11,6 @@ const connectPassport = () => {
                 clientID: baseConfig.clientId,
                 clientSecret: baseConfig.clientSecret,
                 callbackURL: baseConfig.googleCallbackUrl,
-                passReqToCallback: true
             },
 
             async function (accessToken, refreshToken, profile, done) {
