@@ -1,13 +1,17 @@
-import express from 'express'
-import { getAllOrders, getAllUsers } from '../controllers/adminController.js';
-import {isAuthenticated} from "../middlewares/userAuthentication.js";
+import express from "express";
+import {
+    getAllOrders,
+    getAllUsers,
+    processOrder,
+} from "../controllers/adminController.js";
+import { isAdmin, isAuthenticated } from "../middlewares/userAuthentication.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/orders', isAuthenticated, getAllOrders )
+router.get("/orders", isAuthenticated, isAdmin, getAllOrders);
 
-router.get('/order/:orderId', isAuthenticated )
+router.get("/order/:orderId", isAuthenticated, isAdmin, processOrder);
 
-router.get('/users', isAuthenticated, getAllUsers )
+router.get("/users", isAuthenticated, isAdmin, getAllUsers);
 
 export default router;

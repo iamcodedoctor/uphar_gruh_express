@@ -1,13 +1,10 @@
 import { User } from "../models/User.js";
-import {
-    allOrders,
-    process,
-} from "../services/OrderService.js";
+import { allOrders, process } from "../services/OrderService.js";
 
 export const getAllOrders = async (req, res, next) => {
     try {
-        const {page, limit} = req.query;
-        const response = await allOrders({page, limit});
+        const { page, limit } = req.query;
+        const response = await allOrders({ page, limit });
         return res.status(200).json({
             success: true,
             data: response,
@@ -30,21 +27,25 @@ export const processOrder = async (req, res, next) => {
     }
 };
 
-export const getAllUsers = async  (req, res, next) => {
+export const getAllUsers = async (req, res, next) => {
     try {
-        let {page, limit} = req.query;
+        let { page, limit } = req.query;
         page = page || 0;
         limit = limit || 10;
         const documentCount = await User.countDocuments();
-        const users = await User.find({}).skip(page*limit).limit(limit).lean();
+        const users = await User.find({})
+            .skip(page * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+            .lean();
         return res.status(200).json({
             success: true,
             data: {
                 documentCount,
-                data: users
-            }
-        })
+                data: users,
+            },
+        });
     } catch (error) {
         next(error);
     }
-}
+};

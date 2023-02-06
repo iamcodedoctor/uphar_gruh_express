@@ -9,8 +9,8 @@ import {create, getById, list, remove, update} from "../services/ItemService.js"
  */
 export const createItem = async (req, res, next) => {
     try {
-        const {title, price} = req.body;
-        const response = await create({title, price})
+        const {title, price, photo} = req.body;
+        const response = await create({title, price, photo})
         return res.status(201).json({
             success: true,
             data: response

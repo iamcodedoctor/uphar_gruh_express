@@ -1,16 +1,23 @@
 import express from "express";
-import {createItem, deleteItem, getItemById, listItems, updateItem} from "../controllers/ItemController.js";
-import {isAuthenticated} from "../middlewares/userAuthentication.js";
+import {
+    createItem,
+    deleteItem,
+    getItemById,
+    listItems,
+    updateItem,
+} from "../controllers/ItemController.js";
+import { isAdmin, isAuthenticated } from "../middlewares/userAuthentication.js";
 
 const router = express.Router();
 
-router.post('/create', isAuthenticated, createItem)
+router.post("/create", isAuthenticated, isAdmin, createItem);
 
-router.get('/list', listItems)
+router.get("/list", listItems);
 
-router.route("/:id")
+router
+    .route("/:id", isAdmin)
     .get(getItemById)
     .put(updateItem)
-    .delete(deleteItem)
+    .delete(deleteItem);
 
 export default router;

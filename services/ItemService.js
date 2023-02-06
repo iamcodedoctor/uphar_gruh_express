@@ -6,12 +6,13 @@ import {Item} from "../models/Item.js";
  * @param price
  * @returns {Promise<unknown>}
  */
-export const create = ({title, price}) => {
+export const create = ({title, price, photo}) => {
     return new Promise(async (resolve, reject) => {
         try {
             const newItem = await Item.create({
                 title,
-                price
+                price,
+                photo
             })
             return resolve(newItem)
         } catch (error) {

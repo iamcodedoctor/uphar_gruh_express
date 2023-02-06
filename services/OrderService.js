@@ -92,14 +92,14 @@ export const create = ({
 export const myOrders = ({ userId, page, limit }) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const documentCount = await Order.countDocuments({userId});
+            const documentCount = await Order.countDocuments({ userId });
             const myOrders = await Order.find({ userId })
                 .skip(page * limit)
                 .limit(limit)
                 .lean()
                 .populate("userId", "name")
                 .lean();
-            return resolve({documentCount, data: myOrders});
+            return resolve({ documentCount, data: myOrders });
         } catch (error) {
             return reject(error);
         }
@@ -129,6 +129,7 @@ export const allOrders = ({ page, limit }) => {
             const orders = await Order.find()
                 .skip(page * limit)
                 .limit(limit)
+                .sort({ createdAt: -1 })
                 .populate("userId", "name")
                 .lean();
             return resolve({ documentCount, data: orders });
