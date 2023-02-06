@@ -20,8 +20,8 @@ app.use(express.json());
 
 app.use(session({
     secret: baseConfig.sessionSecret,
-    saveUninitialized: true,
-    resave: true
+    saveUninitialized: false,
+    resave: false
 }))
 
 app.use(passport.authenticate('session'))
